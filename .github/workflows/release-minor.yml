@@ -32,6 +32,8 @@ jobs:
       - name: Install dependencies
         run: |
           bun install
+          cd packages/node-widevine
+          bun run build
 
       - name: Build & Release Minor
         run: |
