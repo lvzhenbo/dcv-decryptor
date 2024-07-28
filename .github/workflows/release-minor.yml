@@ -30,6 +30,7 @@ jobs:
           bun-version: latest
 
       - name: Install dependencies
+        continue-on-error: true
         run: |
           bun install
           cd packages/node-widevine
