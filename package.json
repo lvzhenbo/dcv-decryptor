@@ -8,7 +8,8 @@
   ],
   "scripts": {
     "start": "bun run index.ts",
-    "build": "bun build ./index.ts --target=bun-windows-x64 --compile --outfile ./build/dcv-decryptor"
+    "build": "bun build ./index.ts --target=bun-windows-x64 --compile --outfile ./build/dcv-decryptor",
+    "release": "release-it"
   },
   "devDependencies": {
     "@types/bun": "latest",
