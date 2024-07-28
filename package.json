@@ -8,10 +8,11 @@
   ],
   "scripts": {
     "start": "bun run index.ts",
-    "build": "bun build ./index.ts --compile --outfile ./build/dcv-decryptor"
+    "build": "bun build ./index.ts --target=bun-windows-x64 --compile --outfile ./build/dcv-decryptor"
   },
   "devDependencies": {
-    "@types/bun": "latest"
+    "@types/bun": "latest",
+    "release-it": "^17.6.0"
   },
   "peerDependencies": {
     "typescript": "^5.5.4"
@@ -24,6 +25,20 @@
     "jwt-decode": "^4.0.0",
     "node-widevine": "workspace:*",
     "ora": "^8.0.1"
+  },
+  "release-it": {
+    "git": {
+      "commitMessage": "发布 v${version} 版本"
+    },
+    "github": {
+      "release": true,
+      "assets": [
+        "build/dcv-decryptor.exe"
+      ]
+    },
+    "hooks": {
+      "after:git:release": "bun run build"
+    }
   },
   "packageManager": "pnpm@9.6.0+sha512.38dc6fba8dba35b39340b9700112c2fe1e12f10b17134715a4aa98ccf7bb035e76fd981cf0bb384dfa98f8d6af5481c2bef2f4266a24bfa20c34eb7147ce0b5e"
 }

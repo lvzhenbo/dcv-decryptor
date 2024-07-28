@@ -1,0 +1,47 @@
+name: Release
+
+on:
+  workflow_dispatch:
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Source
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          submodules: recursive
+
+      - name: git config
+        run: |
+          git config user.name "${GITHUB_ACTOR}"
+          git config user.email "${GITHUB_ACTOR}@users.noreply.github.com"
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - name: Install Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Install dependencies
+        run: |
+          bun install
+          cd packages/node-widevine
+          pnpm install
+
+      - name: Build & Release
+        run: |
+          bun run release --ci
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
