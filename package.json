@@ -1,5 +1,6 @@
 {
   "name": "dcv-decryptor",
+  "private": true,
   "module": "index.ts",
   "type": "module",
   "version": "0.0.1",
