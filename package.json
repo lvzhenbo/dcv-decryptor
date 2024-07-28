@@ -1,0 +1,29 @@
+{
+  "name": "dcv-decryptor",
+  "module": "index.ts",
+  "type": "module",
+  "version": "0.0.1",
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "start": "bun run index.ts",
+    "build": "bun build ./index.ts --compile --outfile ./build/dcv-decryptor"
+  },
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5.5.4"
+  },
+  "dependencies": {
+    "@inquirer/prompts": "^5.3.2",
+    "axios": "^1.7.2",
+    "boxen": "^8.0.0",
+    "commander": "^12.1.0",
+    "jwt-decode": "^4.0.0",
+    "node-widevine": "workspace:*",
+    "ora": "^8.0.1"
+  },
+  "packageManager": "pnpm@9.6.0+sha512.38dc6fba8dba35b39340b9700112c2fe1e12f10b17134715a4aa98ccf7bb035e76fd981cf0bb384dfa98f8d6af5481c2bef2f4266a24bfa20c34eb7147ce0b5e"
+}
