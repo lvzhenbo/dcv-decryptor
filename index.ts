@@ -34,7 +34,7 @@ for (const executable of executables) {
   try {
     await $`${executable.name} -version`.quiet();
   } catch (envError) {
-    if (fs.existsSync(executable.name)) {
+    if (fs.existsSync(executable.dirPath)) {
       executable.isDir = true;
     } else {
       console.error(`${executable.name} 未在环境变量和当前目录中找到。`);
@@ -46,14 +46,14 @@ for (const executable of executables) {
 const opt = cmd();
 
 if (!opt.privatekey) {
-  if (!fs.existsSync("private_key.pem")) {
+  if (!fs.existsSync(executables[3].dirPath)) {
     console.error("请将private_key.pem放在当前目录中");
     process.exit(1);
   }
 }
 
 if (!opt.clientid) {
-  if (!fs.existsSync("client_id.bin")) {
+  if (!fs.existsSync(executables[4].dirPath)) {
     console.error("请将client_id.bin放在当前目录中");
     process.exit(1);
   }
@@ -88,8 +88,8 @@ if (!opt.file) {
 const data = {
   licenseUid: "",
   pssh: "",
-  privatekey: opt.privatekey || "private_key.pem",
-  clientid: opt.clientid || "client_id.bin",
+  privatekey: opt.privatekey || executables[3].dirPath,
+  clientid: opt.clientid || executables[4].dirPath,
 };
 
 const loginOra = ora("正在获取licenseUid").start();
@@ -135,7 +135,7 @@ const decryptOra = ora("正在解密").start();
 
 try {
   const mp4decrypt = Bun.spawn([
-    executables[2].isDir ? "./mp4decrypt.exe" : "mp4decrypt",
+    executables[2].isDir ? executables[2].dirPath : "mp4decrypt",
     ...ks,
     opt.file,
     opt.file.replace(".dcv", ".tmp"),
@@ -156,7 +156,7 @@ try {
 const ffmpegOra = ora("正在转换").start();
 
 try {
-  await $`ffmpeg -i ${opt.file.replace(".dcv", ".tmp")} -c copy ${opt.file.replace(".dcv", ".mp4")}`.quiet();
+  await $`${executables[0].isDir ? executables[0].dirPath : "ffmpeg"} -i ${opt.file.replace(".dcv", ".tmp")} -c copy ${opt.file.replace(".dcv", ".mp4")}`.quiet();
   ffmpegOra.succeed("转换成功");
 } catch (error) {
   ffmpegOra.fail("转换失败");

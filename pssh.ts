@@ -22,7 +22,7 @@ export async function getPssh(file: string) {
   // }
 
   const jsonInfo: Mp4DumpInfo[] = await $`${
-    executables[1].isDir ? "./mp4dump.exe" : "mp4dump"
+    executables[1].isDir ? executables[1].dirPath : "mp4dump"
   } --verbosity 3 --format json ${file}`.json();
   // console.log(jsonInfo);
 
