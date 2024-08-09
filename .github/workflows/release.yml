@@ -13,6 +13,7 @@ jobs:
         with:
           ref: main
           submodules: recursive
+          fetch-depth: 0
 
       - name: git config
         run: |
