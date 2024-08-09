@@ -1,6 +1,11 @@
 import path from "path";
 
-export const currentPath = path.dirname(process.argv0);
+// 判断process.argv0是否包含bun.exe
+export const isBun = process.argv0.includes("bun.exe");
+
+export const currentPath = process.argv0.includes("bun.exe")
+  ? ""
+  : path.dirname(process.argv0);
 
 export const USER_AGENT =
   "Mozilla/5.0 (Windows NT 10.0; Win64; x64) " +
