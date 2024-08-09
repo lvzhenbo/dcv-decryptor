@@ -39,7 +39,6 @@ jobs:
 
       - name: Build & Release
         run: |
-          git status
           bun run release --ci
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
