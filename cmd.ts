@@ -14,9 +14,9 @@ export const cmd = () => {
     });
 
   program.option("-e, --email <email>", "登录邮箱");
-  program.option("-pw, --password <password>", "登录密码");
-  program.option("-pk, --privatekey <privatekey>", "privatekey路径");
-  program.option("-ci, --clientid <clientid>", "clientid路径");
+  program.option("--pw, --password <password>", "登录密码");
+  program.option("--pk, --privatekey <privatekey>", "privatekey路径");
+  program.option("--ci, --clientid <clientid>", "clientid路径");
 
   program.parse();
 

@@ -14,19 +14,19 @@
   },
   "devDependencies": {
     "@types/bun": "latest",
-    "release-it": "^17.6.0"
+    "release-it": "^19.0.5"
   },
   "peerDependencies": {
-    "typescript": "^5.5.4"
+    "typescript": "^5.9.3"
   },
   "dependencies": {
-    "@inquirer/prompts": "^5.3.8",
-    "axios": "^1.7.3",
+    "@inquirer/prompts": "^7.9.0",
+    "axios": "^1.12.2",
     "boxen": "^8.0.1",
-    "commander": "^12.1.0",
+    "commander": "^14.0.1",
     "jwt-decode": "^4.0.0",
     "node-widevine": "workspace:*",
-    "ora": "^8.0.1"
+    "ora": "^9.0.0"
   },
   "release-it": {
     "git": {

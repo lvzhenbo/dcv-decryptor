@@ -123,7 +123,7 @@ try {
   const keys = await getKeys(data);
   keyOra.succeed("密钥获取成功");
   ks = keys.flatMap((item) =>
-    item ? ["--key", `${item.kid}:${item.key}`] : []
+    item?.kid ? ["--key", `${item.kid}:${item.key}`] : []
   );
 } catch (error) {
   keyOra.fail("密钥获取失败");
