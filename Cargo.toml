@@ -1,0 +1,55 @@
+[package]
+name = "dcv-decryptor"
+version = "0.1.0"
+edition = "2024"
+
+[profile.dev]
+incremental = true # 以较小的步骤编译您的二进制文件。
+
+[profile.release]
+codegen-units = 1 # 允许 LLVM 执行更好的优化。
+lto = true        # 启用链接时优化。
+opt-level = "s"   # 优先考虑小的二进制文件大小。如果您更喜欢速度，请使用 `3`。
+panic = "abort"   # 通过禁用 panic 处理程序来提高性能。
+strip = true      # 确保移除调试符号。
+
+# The profile that 'dist' will build with
+[profile.dist]
+inherits = "release"
+lto = "thin"
+
+[dependencies]
+# Widevine 相关
+widevine = "0.1.0"
+widevine-proto = "0.1.0"
+pssh-box = "0.2.0"
+
+# RSA
+rsa = "0.9.8"
+pkcs1 = "0.7.5"
+
+# HTTP 客户端
+reqwest = { version = "0.12.24", features = ["blocking", "json"] }
+tokio = { version = "1.48.0", features = ["rt-multi-thread", "macros"] }
+
+# 命令行
+clap = { version = "4.5.51", features = ["derive"] }
+inquire = "0.9.1"
+loading = "0.4.0"
+boxen = "0.1.3"
+
+# JSON 和编码
+serde = { version = "1.0.228", features = ["derive"] }
+serde_json = "1.0.145"
+base64 = "0.22.1"
+hex = "0.4.3"
+regex = "1.12.2"
+
+# JWT
+jsonwebtoken = { version = "10.2.0", default-features = false, features = [
+    "use_pem",
+    "rust_crypto",
+] }
+
+# 错误处理
+anyhow = "1.0.100"

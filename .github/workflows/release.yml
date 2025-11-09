@@ -5,7 +5,7 @@ on:
 
 jobs:
   release:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     steps:
       - name: Checkout Source
@@ -20,25 +20,35 @@ jobs:
           git config user.name "${GITHUB_ACTOR}"
           git config user.email "${GITHUB_ACTOR}@users.noreply.github.com"
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - name: Setup Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Cache Cargo
+        uses: actions/cache@v4
         with:
-          node-version: "20"
+          path: |
+            ~/.cargo/bin/
+            ~/.cargo/registry/index/
+            ~/.cargo/registry/cache/
+            ~/.cargo/git/db/
+            target/
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
 
-      - name: Install Bun
-        uses: oven-sh/setup-bun@v2
+      - name: Build Release
+        run: cargo build --release
+
+      - name: Extract version from Cargo.toml
+        id: get_version
+        run: |
+          $version = Select-String -Path "Cargo.toml" -Pattern '^version\s*=\s*"([^"]+)"' | ForEach-Object { $_.Matches.Groups[1].Value }
+          echo "VERSION=$version" >> $env:GITHUB_OUTPUT
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
         with:
-          bun-version: latest
-
-      - name: Install dependencies
-        continue-on-error: true
-        run: |
-          bun install
-          cd packages/node-widevine
-          bun run build
-
-      - name: Build & Release
-        run: |
-          bun run release --ci
+          tag_name: v${{ steps.get_version.outputs.VERSION }}
+          name: 发布 v${{ steps.get_version.outputs.VERSION }}
+          files: target/release/dcv-decryptor.exe
+          generate_release_notes: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

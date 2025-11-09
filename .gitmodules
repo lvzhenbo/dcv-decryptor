@@ -1,3 +1,0 @@
-[submodule "packages/node-widevine"]
-	path = packages/node-widevine
-	url = https://github.com/Frooastside/node-widevine.git
