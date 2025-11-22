@@ -22,10 +22,10 @@ lto = "thin"
 # Widevine 相关
 widevine = "0.1.0"
 widevine-proto = "0.1.0"
-pssh-box = "0.2.0"
+pssh-box = "0.2.1"
 
 # RSA
-rsa = "0.9.8"
+rsa = "0.9.9"
 pkcs1 = "0.7.5"
 
 # HTTP 客户端
@@ -33,7 +33,7 @@ reqwest = { version = "0.12.24", features = ["blocking", "json"] }
 tokio = { version = "1.48.0", features = ["rt-multi-thread", "macros"] }
 
 # 命令行
-clap = { version = "4.5.51", features = ["derive"] }
+clap = { version = "4.5.53", features = ["derive"] }
 inquire = "0.9.1"
 loading = "0.4.0"
 boxen = "0.1.3"
