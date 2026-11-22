@@ -1,0 +1,10 @@
+[package]
+name = "widevine-proto"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+protobuf = "3.7.2"
+
+[build-dependencies]
+protobuf-codegen = "3.7.2"

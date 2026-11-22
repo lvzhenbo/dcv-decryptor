@@ -1,0 +1,31 @@
+{
+  "capabilities": {
+    "client_token": false,
+    "session_token": true,
+    "video_resolution_constraints": false,
+    "max_hdcp_version": "HDCP_NONE",
+    "oem_crypto_api_version": 11,
+    "anti_rollback_usage_table": false,
+    "srm_version": null,
+    "can_update_srm": false,
+    "supported_certificate_key_type": [],
+    "analog_output_capabilities": "ANALOG_OUTPUT_UNKNOWN",
+    "can_disable_analog_output": false,
+    "resource_rating_tier": null
+  },
+  "client_info": {
+    "architecture_name": "x86",
+    "build_info": "google/sdk_google_phone_x86/generic_x86:7.1.1/NYC/5464897:userdebug/test-keys",
+    "company_name": "Google",
+    "device_id": "zdfDCPHaHrBQakqKhEcFqXiLwbblJwg\u0000",
+    "device_name": "generic_x86",
+    "model_name": "Android SDK built for x86",
+    "oem_crypto_security_patch_level": "0",
+    "product_name": "sdk_google_phone_x86",
+    "widevine_cdm_version": "v4.1.0-android"
+  },
+  "wvd": {
+    "device_type": "ANDROID",
+    "security_level": 3
+  }
+}

@@ -1,6 +1,6 @@
 use anyhow::{Context, Result};
 use reqwest::Client;
-use rsa::RsaPrivateKey;
+use rsa::PrivateKey;
 use rsa::pkcs1::DecodeRsaPrivateKey;
 use std::fs;
 use widevine::device::{DeviceType, SecurityLevel};
@@ -28,7 +28,7 @@ pub async fn get_keys(
     let client_id = fs::read(clientid_path).context("读取客户端ID文件失败")?;
 
     // 解析 RSA 私钥
-    let private_key = RsaPrivateKey::from_pkcs1_pem(&private_key_pem).context("解析私钥失败")?;
+    let private_key = PrivateKey::from_pkcs1_pem(&private_key_pem).context("解析私钥失败")?;
 
     // 创建 Widevine 设备
     let device = Device::new(

@@ -8,9 +8,10 @@ use boxen::{BorderStyle, TitleAlignment, builder};
 use clap::Parser;
 use inquire::{Confirm, Text};
 use loading::Loading;
+use mp4decrypt::Ap4CencDecryptingProcessor;
 use std::env;
 use std::fs;
-use std::path::PathBuf;
+use std::path::{Path, PathBuf};
 use std::process::Command;
 
 #[derive(Parser, Debug)]
@@ -68,7 +69,7 @@ async fn main() -> Result<()> {
     let mut args = Args::parse();
 
     // 检查必需的可执行文件
-    check_executables()?;
+    check_ffmpeg()?;
 
     // 获取程序所在目录
     let exe_dir = env::current_exe()
@@ -175,23 +176,20 @@ async fn main() -> Result<()> {
     // 解密
     let loading = create_spinner("正在解密");
     let tmp_file = file_path.replace(".dcv", ".tmp");
-    let mut cmd = Command::new("mp4decrypt");
 
+    if keys.is_empty() {
+        anyhow::bail!("未获取到任何内容密钥");
+    }
+
+    let mut builder = Ap4CencDecryptingProcessor::new();
     for key in &keys {
-        cmd.arg("--key").arg(format!("{}:{}", key.kid, key.key));
+        builder = builder.key(&key.kid, &key.key).context("密钥格式无效")?;
     }
+    let processor = builder.build().context("初始化解密器失败")?;
+    processor
+        .decrypt_file(Path::new(&file_path), Path::new(&tmp_file), None)
+        .context("mp4decrypt解密失败")?;
 
-    cmd.arg(&file_path).arg(&tmp_file);
-
-    let output = cmd.output().context("执行mp4decrypt失败")?;
-    if !output.status.success() {
-        // 失败时显示错误信息
-        eprintln!(
-            "\nmp4decrypt stderr:\n{}",
-            String::from_utf8_lossy(&output.stderr)
-        );
-        anyhow::bail!("mp4decrypt解密失败");
-    }
     loading.success("解密成功");
     loading.end();
 
@@ -222,13 +220,9 @@ async fn main() -> Result<()> {
     Ok(())
 }
 
-fn check_executables() -> Result<()> {
-    let executables = ["ffmpeg", "mp4decrypt"];
-
-    for exe in executables {
-        if Command::new(exe).arg("-version").output().is_err() {
-            anyhow::bail!("{} 未在环境变量中找到", exe);
-        }
+fn check_ffmpeg() -> Result<()> {
+    if Command::new("ffmpeg").arg("-version").output().is_err() {
+        anyhow::bail!("ffmpeg 未在环境变量中找到");
     }
 
     Ok(())
